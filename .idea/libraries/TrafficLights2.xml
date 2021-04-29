@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="TrafficLights2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/run193309960/TrafficLights.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
