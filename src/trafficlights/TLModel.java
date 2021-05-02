@@ -78,6 +78,7 @@ public class TLModel extends Observable {
                     for (Integer k : i.shipPresence) {
                         if (shipMap.get(k)) {
                             remainingSegments = true;
+                            remainingShips = true;
                         }
                     }
                     if (remainingSegments == false) {
