@@ -64,8 +64,8 @@ public class TLModel extends Observable {
         private Ship[] shipArray;
         Map<Integer, Boolean> shipMap;
 
-        public Model(Ship[] shipArray, Map<Integer, Boolean> map) {
-            this.shipArray = shipArray;
+        public Model( Map<Integer, Boolean> map) {
+            this.shipArray = new Ship[5];
             this.shipMap = map;
         }
 
@@ -74,9 +74,9 @@ public class TLModel extends Observable {
         }
 
         public void generateShips() {
-            int[] shipSizes = {5, 4, 2, 2};
+            int[] shipSizes = {5, 4, 3, 2, 2};
 
-            for (int i = 0; i < 5; i++) {
+            for (int i : shipSizes) {
 
                 Random random = new Random();
 
@@ -84,26 +84,38 @@ public class TLModel extends Observable {
 
                 Integer shipStern;
 
+                Integer[] shipPresence = new Integer[i];
+
+
                 int orientation = random.nextInt(2);
 
                 if (orientation == 0) {
                     //hoizontal
-                    if (10 - shipBow <= 5) { // spread left
-                        shipStern = shipBow - 5;
+                    if (10 - shipBow <= i) { // spread left
+                        shipStern = shipBow - (i);
                     } else { //spread right
-                        shipStern = shipBow + 5;
+                        shipStern = shipBow + (i);
+                    }
+
+                    for (int k = 0; k < i; k++) {
+                        shipPresence[k] = Math.min(shipBow, shipStern) + (k+1);
                     }
 
                 } else {
                     //vertical
-                    if (((i + 1) * 10 - shipBow) <= 0) { //spread down
-                        shipStern = shipBow + ((i + 1) * 10);
+                    if (((i) * 10 - shipBow) <= 0) { //spread down
+                        shipStern = shipBow + ((i) * 10);
 
                     } else { //spread up
-                        shipStern = shipBow - ((i + 1) * 10);
+                        shipStern = shipBow - ((i) * 10);
+                    }
+
+                    for (int k = 0; k < i; k++) {
+                        shipPresence[k] = Math.min(shipBow, shipStern) + (10* (k+1));
                     }
                 }
 
+                Ship ship = new Ship(shipBow,shipStern, shipPresence,true);
 
             }
         }
