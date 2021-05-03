@@ -62,9 +62,9 @@ public class TLModel extends Observable {
 
     public class Model extends Observable {
         private Ship[] shipArray;
-        Map<Integer, Boolean> shipMap;
+        Map<Integer, Integer> shipMap;
 
-        public Model(Map<Integer, Boolean> map) {
+        public Model(Map<Integer, Integer> map) {
             this.shipArray = new Ship[5];
             this.shipMap = map;
         }
@@ -76,7 +76,7 @@ public class TLModel extends Observable {
                     boolean remainingSegments = false;
 
                     for (Integer k : i.shipPresence) {
-                        if (shipMap.get(k)) {
+                        if (shipMap.get(k) != 2) {
                             remainingSegments = true;
                             remainingShips = true;
                         }
@@ -91,7 +91,7 @@ public class TLModel extends Observable {
         }
 
         public void registerHit(int location) {
-            shipMap.put(Integer.valueOf(location), false);
+            shipMap.put(Integer.valueOf(location), 2);
         }
 
         public void placeShips() {
@@ -101,7 +101,7 @@ public class TLModel extends Observable {
                 Integer[] presence = i.shipPresence;
 
                 for (Integer k : presence) {
-                    shipMap.put(k, true);
+                    shipMap.put(k, 3);
                 }
             }
         }
@@ -156,6 +156,9 @@ public class TLModel extends Observable {
                 shipArray[i] = ship;
             }
         }
+        public Map<Integer, Integer> getShipMap() {
+            return shipMap;
+        }
 
 
         protected class Ship {
@@ -198,6 +201,8 @@ public class TLModel extends Observable {
             protected boolean isOrientation() {
                 return orientation;
             }
+
+
 
         }
 
