@@ -7,11 +7,11 @@ import java.util.Random;
 
 public class Model extends Observable {
     private Ship[] shipArray;
-    Map<Integer, Boolean> shipMap;
+    Map<Integer, Integer> shipMap;
 
     public Model() {
         this.shipArray = new Ship[5];
-        this.shipMap = new HashMap<Integer, Boolean>();
+        this.shipMap = new HashMap<Integer, Integer>(); //0 ocean 1 miss 2 ship hit 3 ship present
     }
 
     public boolean healthCheck() {
@@ -21,7 +21,7 @@ public class Model extends Observable {
                 boolean remainingSegments = false;
 
                 for (Integer k : i.shipPresence) {
-                    if (shipMap.get(k)) {
+                    if (shipMap.get(k) == 3) {
                         remainingSegments = true;
                         remainingShips = true;
                     }
@@ -36,7 +36,19 @@ public class Model extends Observable {
     }
 
     public void registerHit(int location) {
-        shipMap.put(Integer.valueOf(location), false);
+
+        Integer  hitLoc = Integer.valueOf(location);
+        //If there is a key, set it to 2 if there is a ship or 1 if it isnt a ship, else create & set empty key to a miss
+        if (shipMap.containsKey(location)) {
+            if (shipMap.get(hitLoc) == 3 || hitLoc == 2) {
+                shipMap.put(hitLoc, 2);
+            } else {
+                shipMap.put(hitLoc, 1);
+            }
+        }
+        else {
+            shipMap.put(location, 1);
+        }
     }
 
     public void placeShips() {
@@ -46,14 +58,14 @@ public class Model extends Observable {
             Integer[] presence = i.shipPresence;
 
             for (Integer k : presence) {
-                shipMap.put(k, true);
+                shipMap.put(k, 3);
             }
         }
     }
 
     public void generateShips() {
         int[] shipSizes = {5, 4, 3, 2, 2};
-
+        int arrayIndex = 0;
         for (int i : shipSizes) {
 
             Random random = new Random();
@@ -98,7 +110,8 @@ public class Model extends Observable {
 
             Ship ship = new Ship(shipBow, shipStern, shipPresence, true, setOrientation);
 
-            shipArray[i] = ship;
+            shipArray[arrayIndex] = ship;
+            arrayIndex++;
         }
     }
 
