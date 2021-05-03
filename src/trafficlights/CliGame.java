@@ -23,9 +23,9 @@ public class CliGame {
 
             //0 ocean 1 miss 2 ship hit 3 ship present
             int y = (int) position.charAt(0);
-            int x = (int) position.charAt(1);
+            int x = Integer.parseInt(position.substring(1));
             y = (y - 64);
-            int hitLoc = (y*10) + x;
+            int hitLoc = (y*10) + x -10;
 
             model.registerHit(hitLoc);
 
