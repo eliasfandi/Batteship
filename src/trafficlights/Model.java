@@ -26,7 +26,7 @@ public class Model extends Observable {
                         remainingShips = true;
                     }
                 }
-                if (remainingSegments == false) {
+                if (!remainingSegments) {
                     i.afloat = false;
                 }
 
