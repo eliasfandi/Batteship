@@ -9,7 +9,6 @@ public class Model extends Observable {
     int tryCount;
 
 
-
     public Model() {
         this.shipArray = new Ship[5];
         this.shipMap = new HashMap<Integer, Integer>(); //0 ocean 1 miss 2 ship hit 3 ship present
@@ -40,7 +39,7 @@ public class Model extends Observable {
 
     public void registerHit(int location) {
 
-        Integer  hitLoc = Integer.valueOf(location);
+        Integer hitLoc = Integer.valueOf(location);
         //If there is a key, set it to 2 if there is a ship or 1 if it isnt a ship, else create & set empty key to a miss
         if (shipMap.containsKey(location)) {
             if (shipMap.get(hitLoc) == 3 || hitLoc == 2) {
@@ -48,8 +47,7 @@ public class Model extends Observable {
             } else {
                 shipMap.put(hitLoc, 1);
             }
-        }
-        else {
+        } else {
             shipMap.put(hitLoc, 1);
         }
         tryCount++;
@@ -67,7 +65,7 @@ public class Model extends Observable {
         }
     }
 
-    public void generateShips() { //TODO issue with ship placement here
+    public void generateShips() { //TODO VERIFY SHIP PLACEMENT
         int[] shipSizes = {5, 4, 3, 2, 2};
         int arrayIndex = 0;
         Random random = new Random();
@@ -104,34 +102,39 @@ public class Model extends Observable {
                     if ((shipBow - minRound) > i) {
 
                         for (int k = 0; k < i; k++) {
-                            shipPresence[k] = shipBow - (k+1);
+                            shipPresence[k] = shipBow - (k + 1);
                         }
                     } else {
                         for (int k = 0; k < i; k++) {
-                            shipPresence[k] = shipBow + (k+1); //inclusive of shipBow
+                            shipPresence[k] = shipBow + (k + 1); //inclusive of shipBow
                         }
                     }
                 } else {
                     int column;
                     if (shipBow >= 10) {
-                         column = Integer.parseInt(String.valueOf(shipBow.toString().charAt(0)));
+                        column = Integer.parseInt(String.valueOf(shipBow.toString().charAt(0)));
+                    } else {
+                        column = 1;
                     }
-                    else {
-                         column = 1;
-                    }
-                   // System.out.println("Column: " + column);
+                    // System.out.println("Column: " + column);
                     if (column + i <= 10) {
                         // 2 + 6 = = 8
                         shipPresence[0] = shipBow; // add shipBow itself
                         for (int k = 1; k < i; k++) {
-                            if (k==1){ shipPresence[k] = shipBow + 10;}
-                            else {shipPresence[k] = shipPresence[k-1] + 10;}
+                            if (k == 1) {
+                                shipPresence[k] = shipBow + 10;
+                            } else {
+                                shipPresence[k] = shipPresence[k - 1] + 10;
+                            }
                         }
                     } else {
                         shipPresence[0] = shipBow; // add shipBow itself
                         for (int k = 1; k < i; k++) {
-                           if (k==1){ shipPresence[k] = shipBow - 10;}
-                           else {shipPresence[k] = shipPresence[k-1] - 10;}
+                            if (k == 1) {
+                                shipPresence[k] = shipBow - 10;
+                            } else {
+                                shipPresence[k] = shipPresence[k - 1] - 10;
+                            }
                         }
 
                     }
@@ -156,10 +159,9 @@ public class Model extends Observable {
                         arrayIndex = 0;
 
                         break loopCheck;
-                       //continue;
+                        //continue;
 
-                    }
-                    else {
+                    } else {
                         shipMap.put(k, 3);
                     }
                 }
@@ -171,9 +173,9 @@ public class Model extends Observable {
             }
 
 
-
         }
     }
+
     public Map<Integer, Integer> getShipMap() {
         return shipMap;
     }
@@ -188,7 +190,6 @@ public class Model extends Observable {
         private Integer shipStern;
 
 
-
         private Integer[] shipPresence; // abs(bow-stern) for x and y
         private boolean afloat;
         private boolean orientation; // 0 is horizontal 1 is vertical
@@ -201,6 +202,7 @@ public class Model extends Observable {
             this.afloat = afloat;
             this.orientation = orientation;
         }
+
         public Integer[] getShipPresence() {
             return shipPresence;
         }
@@ -229,7 +231,6 @@ public class Model extends Observable {
         protected boolean isOrientation() {
             return orientation;
         }
-
 
 
     }
