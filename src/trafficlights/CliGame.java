@@ -14,7 +14,7 @@ public class CliGame {
         Model model = new Model();
 
         model.generateShips();
-        model.placeShips();
+        //model.placeShips();
         Scanner input = new Scanner(System.in);
 
         int[] gameArray  = new int[100];
@@ -51,9 +51,15 @@ public class CliGame {
             }
 
 
-            model.healthCheck();
+
+
+                System.out.println("Next Turn");
+
 
         }
+        int tries = model.getTryCount();
+        System.out.println("Game over! You sank every ship in " + tries + " tries!");
+
     }
 }
 
