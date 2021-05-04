@@ -44,7 +44,12 @@ public class CliGame {
                 gameArray[tile.getKey()-1] = tile.getValue();
             }
 
-            System.out.println(Arrays.toString(gameArray));
+            for (int i = 0; i<= 90; i= i+10) {
+
+                int[] subset  = Arrays.copyOfRange(gameArray, i, i + 10);
+                System.out.println(Arrays.toString(subset));
+            }
+
 
             model.healthCheck();
 
