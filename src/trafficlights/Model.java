@@ -7,6 +7,9 @@ import java.util.Random;
 
 public class Model extends Observable {
     private Ship[] shipArray;
+
+
+
     Map<Integer, Integer> shipMap;
 
     public Model() {
@@ -47,7 +50,7 @@ public class Model extends Observable {
             }
         }
         else {
-            shipMap.put(location, 1);
+            shipMap.put(hitLoc, 1);
         }
     }
 
@@ -57,17 +60,22 @@ public class Model extends Observable {
 
             Integer[] presence = i.shipPresence;
 
-            for (Integer k : presence) {
+            for (Integer k : i.shipPresence) {
                 shipMap.put(k, 3);
             }
         }
     }
 
-    public void generateShips() {
+    public void generateShips() { //TODO issue with ship placement here
         int[] shipSizes = {5, 4, 3, 2, 2};
         int arrayIndex = 0;
+        while (shipArray[4] == null)
         for (int i : shipSizes) {
-
+            /*
+            Get random ship starting pos
+            select random orientation
+            Get stern position
+             */
             Random random = new Random();
 
             Integer shipBow = random.nextInt(101);
@@ -76,49 +84,69 @@ public class Model extends Observable {
 
             Integer[] shipPresence = new Integer[i];
 
-
-            int orientation = random.nextInt(2);
             boolean setOrientation;
 
-            if (orientation == 0) {
-                //hoizontal
-                if (10 - shipBow <= i) { // spread left
-                    shipStern = shipBow - (i);
-                } else { //spread right
-                    shipStern = shipBow + (i);
+
+            boolean orientation = random.nextBoolean();
+
+            //randomly select a direction
+            if (orientation == false) { // if orientation horizontal, ch
+                int minRound = 10 * (shipBow /10);
+                int maxRound = minRound + 10;
+
+                if ((shipBow - minRound) >= i) {
+
+                    for (int k = 0; k < i; k++) {
+                        shipPresence[k] = shipBow - k;
+                    }
                 }
 
-                for (int k = 0; k < i; k++) {
-                    shipPresence[k] = Math.min(shipBow, shipStern) + (k + 1);
+                else {
+                    for (int k = 0; k < i; k++) {
+                        shipPresence[k] = shipBow + k; //inclusive of shipBow
+                    }
                 }
-                setOrientation = true;
-            } else {
-                //vertical
-                if (((i) * 10 - shipBow) <= 0) { //spread down
-                    shipStern = shipBow + ((i) * 10);
-
-                } else { //spread up
-                    shipStern = shipBow - ((i) * 10);
-                }
-
-                for (int k = 0; k < i; k++) {
-                    shipPresence[k] = Math.min(shipBow, shipStern) + (10 * (k + 1));
-                }
-
-                setOrientation = false;
             }
 
-            Ship ship = new Ship(shipBow, shipStern, shipPresence, true, setOrientation);
+            else {
+                    int column =  (int) shipBow.toString().charAt(0);
+
+                    if (column + i > 10) {
+                        shipPresence[0] = shipBow; // add shipBow itself
+                        for (int k = 1; k < i; k++) {
+                            shipPresence[k] = shipBow - 10;
+                        }
+                    }
+                    else {
+                        shipPresence[0] = shipBow; // add shipBow itself
+                        for (int k = 1; k < i; k++) {
+                            shipPresence[k] = shipBow + 10;
+                        }
+
+                    }
+            }
+            // Get stern from final generated array
+            shipStern = shipPresence[i-1];
+
+
+
+            Ship ship = new Ship(shipBow, shipStern, shipPresence, true, orientation);
 
             shipArray[arrayIndex] = ship;
             arrayIndex++;
         }
+    }
+    public Map<Integer, Integer> getShipMap() {
+        return shipMap;
     }
 
 
     protected class Ship {
         private Integer shipBow;
         private Integer shipStern;
+
+
+
         private Integer[] shipPresence; // abs(bow-stern) for x and y
         private boolean afloat;
         private boolean orientation; // 0 is horizontal 1 is vertical
@@ -130,6 +158,9 @@ public class Model extends Observable {
             this.shipPresence = ship;
             this.afloat = afloat;
             this.orientation = orientation;
+        }
+        public Integer[] getShipPresence() {
+            return shipPresence;
         }
 
         protected Integer getShipBow() {
@@ -156,6 +187,8 @@ public class Model extends Observable {
         protected boolean isOrientation() {
             return orientation;
         }
+
+
 
     }
 
