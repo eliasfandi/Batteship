@@ -1,20 +1,20 @@
 package trafficlights;
 
-import java.util.Map;
-import java.util.Observable;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Model extends Observable {
+
     private Ship[] shipArray;
-
-
-
     Map<Integer, Integer> shipMap;
+    int tryCount;
+
+
 
     public Model() {
         this.shipArray = new Ship[5];
         this.shipMap = new HashMap<Integer, Integer>(); //0 ocean 1 miss 2 ship hit 3 ship present
+        this.tryCount = 0;
+
     }
 
     public boolean healthCheck() {
@@ -52,6 +52,7 @@ public class Model extends Observable {
         else {
             shipMap.put(hitLoc, 1);
         }
+        tryCount++;
     }
 
     public void placeShips() {
@@ -69,75 +70,116 @@ public class Model extends Observable {
     public void generateShips() { //TODO issue with ship placement here
         int[] shipSizes = {5, 4, 3, 2, 2};
         int arrayIndex = 0;
-        while (shipArray[4] == null)
-        for (int i : shipSizes) {
+        Random random = new Random();
+
+
+        while (shipArray[4] == null) {
+            shipMap = new HashMap<Integer, Integer>();
+            System.out.println("Restarted");
+            loopCheck:
+            for (int i : shipSizes) {
             /*
             Get random ship starting pos
             select random orientation
             Get stern position
              */
-            Random random = new Random();
 
-            Integer shipBow = random.nextInt(101);
+                Integer shipBow = random.nextInt(100);
 
-            Integer shipStern;
+                Integer shipStern;
 
-            Integer[] shipPresence = new Integer[i];
+                Integer[] shipPresence = new Integer[i];
 
-            boolean setOrientation;
+                boolean setOrientation;
 
 
-            boolean orientation = random.nextBoolean();
+                boolean orientation = random.nextBoolean();
 
-            //randomly select a direction
-            if (orientation == false) { // if orientation horizontal, ch
-                int minRound = 10 * (shipBow /10);
-                int maxRound = minRound + 10;
 
-                if ((shipBow - minRound) >= i) {
+                //randomly select a direction
+                if (orientation == false) { // if orientation horizontal, ch
+                    int minRound = 10 * (shipBow / 10);
+                    int maxRound = minRound + 10;
 
-                    for (int k = 0; k < i; k++) {
-                        shipPresence[k] = shipBow - k;
-                    }
-                }
+                    if ((shipBow - minRound) > i) {
 
-                else {
-                    for (int k = 0; k < i; k++) {
-                        shipPresence[k] = shipBow + k; //inclusive of shipBow
-                    }
-                }
-            }
-
-            else {
-                    int column =  (int) shipBow.toString().charAt(0);
-
-                    if (column + i > 10) {
-                        shipPresence[0] = shipBow; // add shipBow itself
-                        for (int k = 1; k < i; k++) {
-                            shipPresence[k] = shipBow - 10;
+                        for (int k = 0; k < i; k++) {
+                            shipPresence[k] = shipBow - (k+1);
                         }
+                    } else {
+                        for (int k = 0; k < i; k++) {
+                            shipPresence[k] = shipBow + (k+1); //inclusive of shipBow
+                        }
+                    }
+                } else {
+                    int column;
+                    if (shipBow >= 10) {
+                         column = Integer.parseInt(String.valueOf(shipBow.toString().charAt(0)));
                     }
                     else {
+                         column = 1;
+                    }
+                   // System.out.println("Column: " + column);
+                    if (column + i <= 10) {
+                        // 2 + 6 = = 8
                         shipPresence[0] = shipBow; // add shipBow itself
                         for (int k = 1; k < i; k++) {
-                            shipPresence[k] = shipBow + 10;
+                            if (k==1){ shipPresence[k] = shipBow + 10;}
+                            else {shipPresence[k] = shipPresence[k-1] + 10;}
+                        }
+                    } else {
+                        shipPresence[0] = shipBow; // add shipBow itself
+                        for (int k = 1; k < i; k++) {
+                           if (k==1){ shipPresence[k] = shipBow - 10;}
+                           else {shipPresence[k] = shipPresence[k-1] - 10;}
                         }
 
                     }
+                }
+                // Get stern from final generated array
+                shipStern = shipPresence[i - 1];
+
+
+                Ship ship = new Ship(shipBow, shipStern, shipPresence, true, orientation);
+
+
+                shipArray[arrayIndex] = ship;
+                for (Integer k : shipPresence) {
+
+                    //Restart generation if there is an intersect
+                    if (shipMap.containsKey(k)) {
+                        //restart process
+                        //break startloop;
+                        //break;
+                        System.out.println("Interference");
+                        shipMap = new HashMap<Integer, Integer>();
+                        arrayIndex = 0;
+
+                        break loopCheck;
+                       //continue;
+
+                    }
+                    else {
+                        shipMap.put(k, 3);
+                    }
+                }
+                System.out.println(i);
+                System.out.println(Arrays.toString(shipPresence));
+
+                arrayIndex++;
+
             }
-            // Get stern from final generated array
-            shipStern = shipPresence[i-1];
 
 
 
-            Ship ship = new Ship(shipBow, shipStern, shipPresence, true, orientation);
-
-            shipArray[arrayIndex] = ship;
-            arrayIndex++;
         }
     }
     public Map<Integer, Integer> getShipMap() {
         return shipMap;
+    }
+
+    public int getTryCount() {
+        return tryCount;
     }
 
 
