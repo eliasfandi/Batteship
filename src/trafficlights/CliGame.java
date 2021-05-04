@@ -1,6 +1,9 @@
 package trafficlights;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class CliGame {
 
@@ -14,7 +17,9 @@ public class CliGame {
         model.placeShips();
         Scanner input = new Scanner(System.in);
 
-        while (model.healthCheck() == true) {
+        int[] gameArray  = new int[100];
+
+        while (model.healthCheck()) {
 
             System.out.println("Enter where you want to aim: ");
             String position = input.nextLine();
@@ -27,7 +32,21 @@ public class CliGame {
             y = (y - 64);
             int hitLoc = (y*10) + x -10;
 
+            
             model.registerHit(hitLoc);
+            Map<Integer, Integer> tileMap = model.getShipMap();
+            Set<Map.Entry<Integer, Integer>> activeTiles = tileMap.entrySet();
+            //Integer[] activeTiles2 = tileMap.keySet().toArray(new Integer[activeTiles.size()]);
+
+
+            for(Map.Entry<Integer, Integer> tile : activeTiles) {
+
+                gameArray[tile.getKey()-1] = tile.getValue();
+            }
+
+            System.out.println(Arrays.toString(gameArray));
+
+            model.healthCheck();
 
         }
     }
