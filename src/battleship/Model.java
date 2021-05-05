@@ -35,7 +35,7 @@ public class Model extends Observable {
     /**
      * Sink check boolean.
      *
-     * @return boolean
+     * @return boolean boolean
      */
     public boolean sinkCheck() {
         boolean shipSank = false;
@@ -51,7 +51,7 @@ public class Model extends Observable {
     /**
      * Health check boolean.
      *
-     * @return boolean
+     * @return boolean boolean
      */
     public boolean healthCheck() {
         boolean remainingShips = false;
@@ -103,6 +103,11 @@ public class Model extends Observable {
         tryCount++;
     }
 
+    /**
+     * Load ship file.
+     *
+     * @throws FileNotFoundException the file not found exception
+     */
     public void loadShipFile() throws FileNotFoundException {
         File shipFile = new File("ships.txt");
         Scanner fileReader = new Scanner(shipFile);
@@ -295,7 +300,6 @@ public class Model extends Observable {
             this.afloat = afloat;
             this.orientation = orientation;
         }
-
 
 
         /**
