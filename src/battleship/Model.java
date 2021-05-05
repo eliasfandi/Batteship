@@ -1,5 +1,7 @@
 package battleship;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -7,6 +9,8 @@ import java.util.*;
  */
 public class Model extends Observable {
 
+    private final Ship[] shipArray;
+    private final boolean[] pastStatus;
     /**
      * The Ship map.
      */
@@ -15,8 +19,6 @@ public class Model extends Observable {
      * The Try count.
      */
     int tryCount;
-    private final Ship[] shipArray;
-    private final boolean[] pastStatus;
 
 
     /**
@@ -101,6 +103,35 @@ public class Model extends Observable {
         tryCount++;
     }
 
+    public void loadShipFile() throws FileNotFoundException {
+        File shipFile = new File("ships.txt");
+        Scanner fileReader = new Scanner(shipFile);
+        int arrayIndex = 0;
+        boolean orientation;
+        while(fileReader.hasNextLine()) {
+            String shipCoord = fileReader.nextLine();
+            String[] coordArray = shipCoord.split(",");
+            Integer[] shipPresence = new Integer[coordArray.length];
+            for (int i= 0; i < coordArray.length; i++) {
+                shipPresence[i] = Integer.parseInt(coordArray[i]);
+                shipMap.put(shipPresence[i], 3);
+
+
+            }
+
+            if (Integer.parseInt(coordArray[0]) - Integer.parseInt(coordArray[1]) <=1){
+                orientation = false;
+            }
+            else {
+                orientation = true;
+            }
+            Ship ship = new Ship(shipPresence[0], shipPresence[coordArray.length-1], shipPresence, true, orientation);
+            shipArray[arrayIndex] = ship;
+
+            arrayIndex++;
+        }
+
+    }
 
     /**
      * Generates ships and places on game board
@@ -244,8 +275,8 @@ public class Model extends Observable {
 
 
         private final Integer[] shipPresence; // abs(bow-stern) for x and y
-        private boolean afloat;
         private final boolean orientation; // 0 is horizontal 1 is vertical
+        private boolean afloat;
 
 
         /**
@@ -254,7 +285,7 @@ public class Model extends Observable {
          * @param shipBow     the ship bow
          * @param shipStern   the ship stern
          * @param ship        the ship
-         * @param afloat      the afloat
+         * @param afloat      the afloat status
          * @param orientation the orientation
          */
         protected Ship(Integer shipBow, Integer shipStern, Integer[] ship, boolean afloat, boolean orientation) {
@@ -265,41 +296,6 @@ public class Model extends Observable {
             this.orientation = orientation;
         }
 
-        /**
-         * Get ship presence integer [ ].
-         *
-         * @return the integer [ ]
-         */
-        public Integer[] getShipPresence() {
-            return shipPresence;
-        }
-
-        /**
-         * Gets ship bow.
-         *
-         * @return the ship bow
-         */
-        protected Integer getShipBow() {
-            return shipBow;
-        }
-
-        /**
-         * Gets ship stern.
-         *
-         * @return the ship stern
-         */
-        protected Integer getShipStern() {
-            return shipStern;
-        }
-
-        /**
-         * Get hit array integer [ ].
-         *
-         * @return the integer [ ]
-         */
-        protected Integer[] getHitArray() {
-            return shipPresence;
-        }
 
 
         /**
@@ -320,14 +316,6 @@ public class Model extends Observable {
             this.afloat = afloat;
         }
 
-        /**
-         * Is orientation boolean.
-         *
-         * @return the boolean
-         */
-        protected boolean isOrientation() {
-            return orientation;
-        }
 
 
     }
