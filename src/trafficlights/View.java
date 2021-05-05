@@ -3,6 +3,7 @@ package trafficlights;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,6 +22,7 @@ public class View extends Application implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("Updated view");
 
     }
 
@@ -31,7 +33,7 @@ public class View extends Application implements Observer {
         GridPane gridpane = new GridPane();
         //Button button = new Button();
         //Label label = new Label("Test");
-        Scene scene = new Scene(gridpane, 800, 400);
+        Scene scene = new Scene(gridpane, 300, 300);
         controller.initGame();
         for (int i = 0; i < 100; i++) {
 
@@ -56,8 +58,11 @@ public class View extends Application implements Observer {
                                        public void handle(ActionEvent event) {
 
                                            //add one to x and y
-                                           String xIn = Integer.toString(gridpane.getRowIndex(tileButton));
-                                           String yIn = Integer.toString(gridpane.getColumnIndex(tileButton));
+                                           int currentX = gridpane.getRowIndex(tileButton);
+                                           int currentY = gridpane.getColumnIndex(tileButton);
+
+                                           String xIn = Integer.toString(currentX);
+                                           String yIn = Integer.toString(currentY);
 
                                            int concatIndex = Integer.parseInt(xIn + yIn) + 1;
 
@@ -67,7 +72,15 @@ public class View extends Application implements Observer {
                                            controller.registerHit(concatIndex);
                                            int updatedStatus = controller.getTileStatus(concatIndex);
                                            System.out.println("Status: " + updatedStatus);
-                                           //gridpane//.getTe
+                                           //Label test  = (Label) gridpane.getChildren();
+                                           for (Node j :  gridpane.getChildren()) {
+                                               if (j instanceof Label && gridpane.getRowIndex(j) == currentX &&
+                                                       gridpane.getColumnIndex(j) == currentY) {
+                                                   ((Label) j).setText(Integer.toString(updatedStatus));
+                                               }
+                                           }
+                                           //test.setText("wow");
+                                           //gridpane.add(new Label(Integer.toString(updatedStatus)), currentX, currentY);
 
                                        }
                                    }
@@ -76,8 +89,6 @@ public class View extends Application implements Observer {
 
         }
 
-        // don't forget to add children to gridpane
-        //gridpane.getChildren().addAll(button, label);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
