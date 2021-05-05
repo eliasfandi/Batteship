@@ -18,12 +18,11 @@ import java.util.Observer;
  */
 public class View extends Application implements Observer {
 
-    private Model model;
-    private Controller controller;
     private final Label tryDisplay = new Label("0 tries");
     private final Label shipNotif = new Label("No ship sunk");
     private final Label gameEnd = new Label("Game in progress");
-
+    private Model model;
+    private Controller controller;
 
     @Override
     public void update(Observable o, Object arg) {
