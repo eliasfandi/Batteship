@@ -23,14 +23,13 @@ public class CliGame {
         while (model.healthCheck()) {
 
 
-
             System.out.println("Enter where you want to aim: ");
             String position = input.nextLine();
 
             //input.close();
 
             //0 ocean 1 miss 2 ship hit 3 ship present
-            int y = (int) position.charAt(0);
+            int y = position.charAt(0);
             int x = Integer.parseInt(position.substring(1));
             y = (y - 64);
             int hitLoc = (y * 10) + x - 10;
@@ -58,29 +57,29 @@ public class CliGame {
                 }
             }
 
-                for (int i = 0; i <= 90; i = i + 10) {
+            for (int i = 0; i <= 90; i = i + 10) {
 
-                    int[] subset = Arrays.copyOfRange(gameArray, i, i + 10);
-                    System.out.println(Arrays.toString(subset));
-                }
-
-
-                tries = model.getTryCount();
-
-                System.out.println("Next Turn");
-                System.out.println(tries + " tries so far");
-
-                model.healthCheck();
-                if (model.sinkCheck()) {
-                    System.out.println("You sank a ship!");
-                }
-
-
+                int[] subset = Arrays.copyOfRange(gameArray, i, i + 10);
+                System.out.println(Arrays.toString(subset));
             }
+
+
             tries = model.getTryCount();
-            System.out.println("Game over! You sank every ship in " + tries + " tries!");
+
+            System.out.println("Next Turn");
+            System.out.println(tries + " tries so far");
+
+            model.healthCheck();
+            if (model.sinkCheck()) {
+                System.out.println("You sank a ship!");
+            }
+
 
         }
+        tries = model.getTryCount();
+        System.out.println("Game over! You sank every ship in " + tries + " tries!");
+
     }
+}
 
 
