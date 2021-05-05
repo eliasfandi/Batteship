@@ -40,7 +40,7 @@ public class View extends Application implements Observer {
             int x;
             if (i > 9) {
                 x = Integer.parseInt(Integer.toString(i).substring(1));
-                y = Integer.parseInt(Integer.toString(i).substring(0,1));
+                y = Integer.parseInt(Integer.toString(i).substring(0, 1));
             } else {
                 x = i;
                 y = 0;
@@ -54,12 +54,18 @@ public class View extends Application implements Observer {
             tileButton.setOnAction(new EventHandler<ActionEvent>() {
                                        @Override
                                        public void handle(ActionEvent event) {
-                                           //controller.registerHit(i);
-                                           int xin = gridpane.getRowIndex(tileButton);
-                                           int yin = gridpane.getColumnIndex(tileButton);
+
+                                           //add one to x and y
+                                           String xIn = Integer.toString(gridpane.getRowIndex(tileButton));
+                                           String yIn = Integer.toString(gridpane.getColumnIndex(tileButton));
+                                           int concatIndex;
+
+
+                                               concatIndex = Integer.parseInt(xIn + yIn) +1 ;
 
                                            System.out.println("Ran Button");
-                                           System.out.println("y " + yin + " x " + xin);
+                                           System.out.println("Concat: " + concatIndex);
+                                           controller.registerHit(concatIndex);
 
                                        }
                                    }
