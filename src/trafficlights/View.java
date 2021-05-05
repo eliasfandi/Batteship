@@ -19,7 +19,6 @@ public class View extends Application implements Observer {
     private Controller controller;
 
 
-
     @Override
     public void update(Observable o, Object arg) {
 
@@ -30,17 +29,47 @@ public class View extends Application implements Observer {
         model = new Model();
         controller = new Controller(model);
         GridPane gridpane = new GridPane();
-        Button button = new Button();
-        Label label = new Label("Test");
-        Scene scene = new Scene(gridpane,800,400);
+        //Button button = new Button();
+        //Label label = new Label("Test");
+        Scene scene = new Scene(gridpane, 800, 400);
 
-        gridpane.add(new Button(), 1, 0); // column=1 row=0
-        gridpane.add(new Label(), 2, 0);  // column=2 row=0
-        // or convenience methods set more than one constraint at once...
-        //GridPane.setConstraints(label, 2, 0); // column=2 row=0
+        for (int i = 0; i < 100; i++) {
+
+            Button tileButton = new Button();
+            int y;
+            int x;
+            if (i > 9) {
+                x = Integer.parseInt(Integer.toString(i).substring(1));
+                y = Integer.parseInt(Integer.toString(i).substring(0,1));
+            } else {
+                x = i;
+                y = 0;
+            }
+            gridpane.add(tileButton, x, y); // column=1 row=0
+            gridpane.add(new Label("x"), x, y);
+            System.out.println("x: " + x + " y " + y);
+            //System.out.println(i);
+
+
+            tileButton.setOnAction(new EventHandler<ActionEvent>() {
+                                       @Override
+                                       public void handle(ActionEvent event) {
+                                           //controller.registerHit(i);
+                                           int xin = gridpane.getRowIndex(tileButton);
+                                           int yin = gridpane.getColumnIndex(tileButton);
+
+                                           System.out.println("Ran Button");
+                                           System.out.println("y " + yin + " x " + xin);
+
+                                       }
+                                   }
+
+            );
+
+        }
 
         // don't forget to add children to gridpane
-        gridpane.getChildren().addAll(button, label);
+        //gridpane.getChildren().addAll(button, label);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
