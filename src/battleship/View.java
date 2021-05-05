@@ -17,6 +17,9 @@ public class View extends Application implements Observer {
 
     private Model model;
     private Controller controller;
+    private final Label tryDisplay = new Label("0 tries");
+    private final Label shipNotif = new Label("No ship sunk");
+    private final Label gameEnd = new Label("Game in progress");
 
 
     @Override
@@ -27,11 +30,13 @@ public class View extends Application implements Observer {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+
         model = new Model();
-        controller = new Controller(model);
+        controller = new Controller(model, this);
         GridPane gridpane = new GridPane();
         //Button button = new Button();
-        //Label label = new Label("Test");
+
         Scene scene = new Scene(gridpane, 300, 300);
         controller.initGame();
         for (int i = 0; i < 100; i++) {
@@ -78,8 +83,10 @@ public class View extends Application implements Observer {
                                                    ((Label) j).setText(Integer.toString(updatedStatus));
                                                }
                                            }
-                                           //test.setText("wow");
-                                           //gridpane.add(new Label(Integer.toString(updatedStatus)), currentX, currentY);
+                                           controller.continueGameCheck(); //Order of this important
+                                           controller.updateTries();
+                                           controller.notifySunkShip();
+
 
                                        }
                                    }
@@ -87,8 +94,22 @@ public class View extends Application implements Observer {
             );
 
         }
-
+        gridpane.add(tryDisplay, 140, 120);
+        gridpane.add(shipNotif, 140, 130);
+        gridpane.add(gameEnd, 140, 140);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public void setTries(String tries) {
+        tryDisplay.setText(tries);
+    }
+
+    public void setShipNotif(String notif) {
+        shipNotif.setText(notif);
+    }
+
+    public void setGameEnd(String gameStatus) {
+        gameEnd.setText(gameStatus);
     }
 }
