@@ -30,5 +30,8 @@ public class Controller
         }
         return tileStatus;
     }
+    public void initGame () {
+        model.generateShips();
+    }
 
 }
