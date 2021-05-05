@@ -32,7 +32,7 @@ public class View extends Application implements Observer {
         //Button button = new Button();
         //Label label = new Label("Test");
         Scene scene = new Scene(gridpane, 800, 400);
-
+        controller.initGame();
         for (int i = 0; i < 100; i++) {
 
             Button tileButton = new Button();
@@ -58,14 +58,16 @@ public class View extends Application implements Observer {
                                            //add one to x and y
                                            String xIn = Integer.toString(gridpane.getRowIndex(tileButton));
                                            String yIn = Integer.toString(gridpane.getColumnIndex(tileButton));
-                                           int concatIndex;
 
-
-                                               concatIndex = Integer.parseInt(xIn + yIn) +1 ;
+                                           int concatIndex = Integer.parseInt(xIn + yIn) + 1;
 
                                            System.out.println("Ran Button");
                                            System.out.println("Concat: " + concatIndex);
+
                                            controller.registerHit(concatIndex);
+                                           int updatedStatus = controller.getTileStatus(concatIndex);
+                                           System.out.println("Status: " + updatedStatus);
+                                           //gridpane//.getTe
 
                                        }
                                    }
