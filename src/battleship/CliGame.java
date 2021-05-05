@@ -8,7 +8,6 @@ import java.util.Set;
 public class CliGame {
 
 
-
     public static void main(String[] args) {
 
         Model model = new Model();
@@ -17,10 +16,13 @@ public class CliGame {
         //model.placeShips();
         Scanner input = new Scanner(System.in);
 
-        int[] gameArray  = new int[100];
+        int[] gameArray = new int[100];
         int tries;
-
+        System.out.println("(Cheat) View Ships on board? y/n:  ");
+        String cheat = input.nextLine();
         while (model.healthCheck()) {
+
+
 
             System.out.println("Enter where you want to aim: ");
             String position = input.nextLine();
@@ -31,25 +33,36 @@ public class CliGame {
             int y = (int) position.charAt(0);
             int x = Integer.parseInt(position.substring(1));
             y = (y - 64);
-            int hitLoc = (y*10) + x -10;
+            int hitLoc = (y * 10) + x - 10;
 
-            
+
             model.registerHit(hitLoc);
             Map<Integer, Integer> tileMap = model.getShipMap();
             Set<Map.Entry<Integer, Integer>> activeTiles = tileMap.entrySet();
             //Integer[] activeTiles2 = tileMap.keySet().toArray(new Integer[activeTiles.size()]);
 
 
-            for(Map.Entry<Integer, Integer> tile : activeTiles) {
+            for (Map.Entry<Integer, Integer> tile : activeTiles) {
 
-                gameArray[tile.getKey()-1] = tile.getValue();
+                if (cheat.equals("y")) {
+                    gameArray[tile.getKey() - 1] = tile.getValue();
+
+                } else {
+                    if (tile.getValue() == 3) {
+                        gameArray[tile.getKey() - 1] = 0;
+
+                    } else {
+                        gameArray[tile.getKey() - 1] = tile.getValue();
+
+                    }
+                }
             }
 
-            for (int i = 0; i<= 90; i= i+10) {
+                for (int i = 0; i <= 90; i = i + 10) {
 
-                int[] subset  = Arrays.copyOfRange(gameArray, i, i + 10);
-                System.out.println(Arrays.toString(subset));
-            }
+                    int[] subset = Arrays.copyOfRange(gameArray, i, i + 10);
+                    System.out.println(Arrays.toString(subset));
+                }
 
 
                 tries = model.getTryCount();
@@ -58,19 +71,16 @@ public class CliGame {
                 System.out.println(tries + " tries so far");
 
                 model.healthCheck();
-                if(model.sinkCheck()) {
+                if (model.sinkCheck()) {
                     System.out.println("You sank a ship!");
                 }
-                else{
-                    System.out.println("nothing");
-            }
 
+
+            }
+            tries = model.getTryCount();
+            System.out.println("Game over! You sank every ship in " + tries + " tries!");
 
         }
-        tries = model.getTryCount();
-        System.out.println("Game over! You sank every ship in " + tries + " tries!");
-
     }
-}
 
 
