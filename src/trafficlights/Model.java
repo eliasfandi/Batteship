@@ -42,7 +42,7 @@ public class Model extends Observable {
         Integer hitLoc = Integer.valueOf(location);
         //If there is a key, set it to 2 if there is a ship or 1 if it isnt a ship, else create & set empty key to a miss
         if (shipMap.containsKey(location)) {
-            if (shipMap.get(hitLoc) == 3 || hitLoc == 2) {
+            if (shipMap.get(hitLoc) == 3 || shipMap.get(hitLoc) == 2) {
                 shipMap.put(hitLoc, 2);
             } else {
                 shipMap.put(hitLoc, 1);
