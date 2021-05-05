@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * The type View.
+ */
 public class View extends Application implements Observer {
 
     private Model model;
@@ -101,14 +104,29 @@ public class View extends Application implements Observer {
         primaryStage.show();
     }
 
+    /**
+     * Sets tries.
+     *
+     * @param tries the tries
+     */
     public void setTries(String tries) {
         tryDisplay.setText(tries);
     }
 
+    /**
+     * Sets ship notif.
+     *
+     * @param notif the notif
+     */
     public void setShipNotif(String notif) {
         shipNotif.setText(notif);
     }
 
+    /**
+     * Sets game end.
+     *
+     * @param gameStatus the game status
+     */
     public void setGameEnd(String gameStatus) {
         gameEnd.setText(gameStatus);
     }

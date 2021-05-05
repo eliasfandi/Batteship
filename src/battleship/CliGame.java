@@ -5,9 +5,17 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * The type Cli game.
+ */
 public class CliGame {
 
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
 
         Model model = new Model();

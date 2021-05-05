@@ -2,14 +2,26 @@ package battleship;
 
 import java.util.*;
 
+/**
+ * The type Model.
+ */
 public class Model extends Observable {
 
+    /**
+     * The Ship map.
+     */
     Map<Integer, Integer> shipMap;
+    /**
+     * The Try count.
+     */
     int tryCount;
     private final Ship[] shipArray;
     private final boolean[] pastStatus;
 
 
+    /**
+     * Instantiates a new Model.
+     */
     public Model() {
         this.shipArray = new Ship[5];
         this.shipMap = new HashMap<Integer, Integer>(); //0 ocean 1 miss 2 ship hit 3 ship present
@@ -18,6 +30,11 @@ public class Model extends Observable {
 
     }
 
+    /**
+     * Sink check boolean.
+     *
+     * @return boolean
+     */
     public boolean sinkCheck() {
         boolean shipSank = false;
         for (int i = 0; i < 5; i++) {
@@ -29,6 +46,11 @@ public class Model extends Observable {
         return shipSank;
     }
 
+    /**
+     * Health check boolean.
+     *
+     * @return boolean
+     */
     public boolean healthCheck() {
         boolean remainingShips = false;
 
@@ -53,6 +75,11 @@ public class Model extends Observable {
         return remainingShips;
     }
 
+    /**
+     * Register hit.
+     *
+     * @param location the location
+     */
     public void registerHit(int location) {
 
         //Store status of ships before hit for sink detection
@@ -74,18 +101,10 @@ public class Model extends Observable {
         tryCount++;
     }
 
-    public void placeShips() {
-        //5, 4, 3, 2, 2
-        for (Ship i : shipArray) {
 
-            Integer[] presence = i.shipPresence;
-
-            for (Integer k : i.shipPresence) {
-                shipMap.put(k, 3);
-            }
-        }
-    }
-
+    /**
+     * Generates ships and places on game board
+     */
     public void generateShips() { //TODO VERIFY SHIP PLACEMENT
         int[] shipSizes = {5, 4, 3, 2, 2};
         int arrayIndex = 0;
@@ -197,15 +216,28 @@ public class Model extends Observable {
         }
     }
 
+    /**
+     * Gets ship map.
+     *
+     * @return ship map
+     */
     public Map<Integer, Integer> getShipMap() {
         return shipMap;
     }
 
+    /**
+     * Gets try count.
+     *
+     * @return try count
+     */
     public int getTryCount() {
         return tryCount;
     }
 
 
+    /**
+     * The type Ship.
+     */
     protected class Ship {
         private final Integer shipBow;
         private final Integer shipStern;
@@ -216,6 +248,15 @@ public class Model extends Observable {
         private final boolean orientation; // 0 is horizontal 1 is vertical
 
 
+        /**
+         * Instantiates a new Ship.
+         *
+         * @param shipBow     the ship bow
+         * @param shipStern   the ship stern
+         * @param ship        the ship
+         * @param afloat      the afloat
+         * @param orientation the orientation
+         */
         protected Ship(Integer shipBow, Integer shipStern, Integer[] ship, boolean afloat, boolean orientation) {
             this.shipBow = shipBow;
             this.shipStern = shipStern;
@@ -224,31 +265,66 @@ public class Model extends Observable {
             this.orientation = orientation;
         }
 
+        /**
+         * Get ship presence integer [ ].
+         *
+         * @return the integer [ ]
+         */
         public Integer[] getShipPresence() {
             return shipPresence;
         }
 
+        /**
+         * Gets ship bow.
+         *
+         * @return the ship bow
+         */
         protected Integer getShipBow() {
             return shipBow;
         }
 
+        /**
+         * Gets ship stern.
+         *
+         * @return the ship stern
+         */
         protected Integer getShipStern() {
             return shipStern;
         }
 
+        /**
+         * Get hit array integer [ ].
+         *
+         * @return the integer [ ]
+         */
         protected Integer[] getHitArray() {
             return shipPresence;
         }
 
 
+        /**
+         * Gets afloat.
+         *
+         * @return the afloat
+         */
         protected boolean getAfloat() {
             return afloat;
         }
 
+        /**
+         * Sets afloat.
+         *
+         * @param afloat the afloat
+         */
         protected void setAfloat(boolean afloat) {
             this.afloat = afloat;
         }
 
+        /**
+         * Is orientation boolean.
+         *
+         * @return the boolean
+         */
         protected boolean isOrientation() {
             return orientation;
         }
