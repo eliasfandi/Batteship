@@ -1,4 +1,4 @@
-package trafficlights;
+package battleship;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -18,6 +18,7 @@ public class CliGame {
         Scanner input = new Scanner(System.in);
 
         int[] gameArray  = new int[100];
+        int tries;
 
         while (model.healthCheck()) {
 
@@ -51,13 +52,22 @@ public class CliGame {
             }
 
 
-
+                tries = model.getTryCount();
 
                 System.out.println("Next Turn");
+                System.out.println(tries + " tries so far");
+
+                model.healthCheck();
+                if(model.sinkCheck()) {
+                    System.out.println("You sank a ship!");
+                }
+                else{
+                    System.out.println("nothing");
+            }
 
 
         }
-        int tries = model.getTryCount();
+        tries = model.getTryCount();
         System.out.println("Game over! You sank every ship in " + tries + " tries!");
 
     }

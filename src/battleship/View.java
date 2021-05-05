@@ -1,4 +1,4 @@
-package trafficlights;
+package battleship;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.util.Observable;
@@ -48,7 +47,7 @@ public class View extends Application implements Observer {
                 y = 0;
             }
             gridpane.add(tileButton, x, y); // column=1 row=0
-            gridpane.add(new Label("x"), x, y);
+            gridpane.add(new Label("o"), x, y);
             System.out.println("x: " + x + " y " + y);
             //System.out.println(i);
 
@@ -58,8 +57,8 @@ public class View extends Application implements Observer {
                                        public void handle(ActionEvent event) {
 
                                            //add one to x and y
-                                           int currentX = gridpane.getRowIndex(tileButton);
-                                           int currentY = gridpane.getColumnIndex(tileButton);
+                                           int currentX = GridPane.getRowIndex(tileButton);
+                                           int currentY = GridPane.getColumnIndex(tileButton);
 
                                            String xIn = Integer.toString(currentX);
                                            String yIn = Integer.toString(currentY);
@@ -73,9 +72,9 @@ public class View extends Application implements Observer {
                                            int updatedStatus = controller.getTileStatus(concatIndex);
                                            System.out.println("Status: " + updatedStatus);
                                            //Label test  = (Label) gridpane.getChildren();
-                                           for (Node j :  gridpane.getChildren()) {
-                                               if (j instanceof Label && gridpane.getRowIndex(j) == currentX &&
-                                                       gridpane.getColumnIndex(j) == currentY) {
+                                           for (Node j : gridpane.getChildren()) {
+                                               if (j instanceof Label && GridPane.getRowIndex(j) == currentX &&
+                                                       GridPane.getColumnIndex(j) == currentY) {
                                                    ((Label) j).setText(Integer.toString(updatedStatus));
                                                }
                                            }

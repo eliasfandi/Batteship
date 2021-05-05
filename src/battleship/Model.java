@@ -1,25 +1,40 @@
-package trafficlights;
+package battleship;
 
 import java.util.*;
 
 public class Model extends Observable {
 
-    private Ship[] shipArray;
     Map<Integer, Integer> shipMap;
     int tryCount;
+    private final Ship[] shipArray;
+    private final boolean[] pastStatus;
 
 
     public Model() {
         this.shipArray = new Ship[5];
         this.shipMap = new HashMap<Integer, Integer>(); //0 ocean 1 miss 2 ship hit 3 ship present
         this.tryCount = 0;
+        this.pastStatus = new boolean[5];
 
+    }
+
+    public boolean sinkCheck() {
+        boolean shipSank = false;
+        for (int i = 0; i < 5; i++) {
+            if (pastStatus[i] && !shipArray[i].getAfloat()) {
+                shipSank = true;
+            }
+        }
+
+        return shipSank;
     }
 
     public boolean healthCheck() {
         boolean remainingShips = false;
+
+
         for (Ship i : shipArray) {
-            if (i.afloat) {
+            if (i.getAfloat()) {
                 boolean remainingSegments = false;
 
                 for (Integer k : i.shipPresence) {
@@ -29,7 +44,8 @@ public class Model extends Observable {
                     }
                 }
                 if (!remainingSegments) {
-                    i.afloat = false;
+
+                    i.setAfloat(false);
                 }
 
             }
@@ -39,6 +55,11 @@ public class Model extends Observable {
 
     public void registerHit(int location) {
 
+        //Store status of ships before hit for sink detection
+        for (int i = 0; i < 5; i++) {
+            pastStatus[i] = shipArray[i].getAfloat();
+
+        }
         Integer hitLoc = Integer.valueOf(location);
         //If there is a key, set it to 2 if there is a ship or 1 if it isnt a ship, else create & set empty key to a miss
         if (shipMap.containsKey(location)) {
@@ -186,13 +207,13 @@ public class Model extends Observable {
 
 
     protected class Ship {
-        private Integer shipBow;
-        private Integer shipStern;
+        private final Integer shipBow;
+        private final Integer shipStern;
 
 
-        private Integer[] shipPresence; // abs(bow-stern) for x and y
+        private final Integer[] shipPresence; // abs(bow-stern) for x and y
         private boolean afloat;
-        private boolean orientation; // 0 is horizontal 1 is vertical
+        private final boolean orientation; // 0 is horizontal 1 is vertical
 
 
         protected Ship(Integer shipBow, Integer shipStern, Integer[] ship, boolean afloat, boolean orientation) {
